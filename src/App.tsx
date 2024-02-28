@@ -1,7 +1,7 @@
 import { useMachine } from "@xstate/react";
 import { ytUrlMachine } from "./yt-url-machine";
 import React from "react";
-import { Button, Form, Input, Label, TextField } from "react-aria-components";
+// import { Button, Form, Input, Label, TextField } from "react-aria-components";
 
 declare global {
   interface Window {
@@ -11,13 +11,15 @@ declare global {
 }
 
 function App() {
-  const [state, send, actor] = useMachine(ytUrlMachine);
+  const iframeRef = React.useRef<HTMLIFrameElement>(null);
+  const [state, send, actor] = useMachine(ytUrlMachine, {
+    devTools: true,
+  });
   actor.onTransition((state) => {
     console.log("state", state.value);
   });
 
   function onPlayerReady() {
-    console.log("player ready");
     send({ type: "ready" });
   }
   function onPlayerStateChange(event: YT.OnStateChangeEvent) {
@@ -29,18 +31,18 @@ function App() {
       [YT.PlayerState.PAUSED]: "PAUSED",
       [YT.PlayerState.ENDED]: "ENDED",
     } as const;
-    console.log("state change", nameMap[event.data]);
     send({ type: nameMap[event.data] });
   }
   function onPlayerError(event: YT.OnErrorEvent) {
+    // console.log(YT.PlayerError.EmbeddingNotAllowed2);
+    console.log("error", event);
     const nameMap = {
-      [YT.PlayerError.VideoNotFound]: "VideoNotFound",
-      [YT.PlayerError.EmbeddingNotAllowed]: "EmbeddingNotAllowed",
-      [YT.PlayerError.Html5Error]: "Html5Error",
-      [YT.PlayerError.InvalidParam]: "InvalidParam",
-      [YT.PlayerError.EmbeddingNotAllowed2]: "EmbeddingNotAllowed2",
+      [100]: "VideoNotFound",
+      [101]: "EmbeddingNotAllowed",
+      [5]: "Html5Error",
+      [2]: "InvalidParam",
+      [150]: "EmbeddingNotAllowed2",
     } as const;
-    console.log("error", nameMap[event.data]);
     send({ type: nameMap[event.data] });
   }
 
@@ -64,38 +66,48 @@ function App() {
   };
 
   React.useEffect(() => {
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    tag.id = "yt-iframe-api";
-    document.body.appendChild(tag);
+    console.log("running iframe effect");
+    if (iframeRef.current && state.context.urlChecked) {
+      console.log("iframe effect");
+      send({ type: "iframe rendered" });
+    }
+  }, [iframeRef.current]);
 
+  React.useEffect(() => {
+    let tag: HTMLScriptElement;
+    if (iframeRef.current) {
+      console.log("loading iframe api");
+      tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      tag.id = "yt-iframe-api";
+      document.body.appendChild(tag);
+    }
     return () => {
-      document.body.removeChild(tag);
+      if (tag) document.body.removeChild(tag);
     };
-  }, []);
+  }, [state.context.iframeRendered]);
 
   return (
     <main className="h-full min-h-screen w-full min-w-full bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300">
       <div className="grid h-dvh w-full grid-cols-[1fr_1fr_1fr] grid-rows-[1fr_1fr_1fr]">
-        {/* <div id="player" className="aspect-video w-full"></div> */}
+        {state.context.urlChecked && (
+          <iframe
+            ref={iframeRef}
+            id="player"
+            className="aspect-video h-full w-full [grid-column:1_/_4] [grid-row:1_/_4]"
+            src={state.context.embedString || ""}
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          ></iframe>
+        )}
 
-        <iframe
-          id="player"
-          className="aspect-video h-full w-full [grid-column:1_/_4] [grid-row:1_/_4]"
-          src="https://www.youtube.com/embed/cF0QqjdT5bY?enablejsapi=1&controls=0&modestbranding=1&playsinline=1&rel=0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
-
-        {state.matches("Ready") && (
+        {state.matches("Player ready.Not playing") && (
           <div
             onClick={() => {
-              console.log("play");
-              window.player.playVideo();
+              send({ type: "play" });
             }}
             className=" bg-pink-300 text-pink-700 opacity-90 [grid-column:1_/_4] [grid-row:1_/_4]"
           >
-            Ready
+            Hey
           </div>
         )}
       </div>
