@@ -12,8 +12,17 @@ declare global {
 
 function App() {
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
+  const outerGrid = React.useRef<HTMLDivElement>(null);
   const [state, send, actor] = useMachine(ytUrlMachine, {
     devTools: true,
+    services: {
+      "fullscreen api": () => {
+        return outerGrid.current?.requestFullscreen() || Promise.reject();
+      },
+      "exit fullscreen api": () => {
+        return document.exitFullscreen();
+      },
+    },
   });
   actor.onTransition((state) => {
     console.log("state", state.value);
@@ -89,7 +98,10 @@ function App() {
 
   return (
     <main className="h-full min-h-screen w-full min-w-full bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300">
-      <div className="grid h-dvh w-full grid-cols-[1fr_1fr_1fr] grid-rows-[1fr_1fr_1fr]">
+      <div
+        ref={outerGrid}
+        className="grid h-dvh w-full grid-cols-[1fr_1fr_1fr] grid-rows-[1fr_1fr_1fr]"
+      >
         {state.context.urlChecked && (
           <iframe
             ref={iframeRef}
@@ -100,14 +112,86 @@ function App() {
           ></iframe>
         )}
 
-        {state.matches("Player ready.Not playing") && (
-          <div
-            onClick={() => {
-              send({ type: "play" });
-            }}
-            className=" bg-pink-300 text-pink-700 opacity-90 [grid-column:1_/_4] [grid-row:1_/_4]"
-          >
-            Hey
+        {state.matches("Player ready.Screen.Minimized") &&
+          outerGrid.current && (
+            <div className="flex h-full w-full [grid-column:3_/_4] [grid-row:3_/_4]">
+              <button
+                className="border-2 border-pink-800 px-1"
+                onClick={() => {
+                  console.log("sending request fullscreen");
+                  send({
+                    type: "request fullscreen",
+                  });
+                }}
+              >
+                Maximize
+              </button>
+            </div>
+          )}
+
+        {state.matches("Player ready.Operations.Not playing") && (
+          <div className="grid grid-cols-[1fr_1fr_1fr] grid-rows-[1fr_1fr_1fr] place-items-center  bg-pink-300 text-pink-700 opacity-90 [grid-column:1_/_4] [grid-row:1_/_4]">
+            {state.matches(
+              "Player ready.Operations.Not playing.Wait for input",
+            ) && (
+              <div>
+                {state.can({ type: "cancel" }) && (
+                  <button
+                    className="border-2 border-pink-800 px-1"
+                    onClick={() => send({ type: "cancel" })}
+                  >
+                    Cancel
+                  </button>
+                )}
+                <h1 className="text-4xl">Wait for input</h1>
+              </div>
+            )}
+
+            {state.matches(
+              "Player ready.Operations.Not playing.Video stopped.Paused",
+            ) && (
+              <div>
+                <h1 className="text-4xl">Paused</h1>
+                <div className="flex gap-2">
+                  <button
+                    className="border-2 border-pink-800 px-1"
+                    onClick={() => send({ type: "play" })}
+                  >
+                    Play
+                  </button>
+                  <button
+                    className="border-2 border-pink-800 px-1"
+                    onClick={() => send({ type: "new video" })}
+                  >
+                    {" "}
+                    New Video{" "}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {state.matches(
+              "Player ready.Operations.Not playing.Video stopped.Ended",
+            ) && (
+              <div className="flex gap-2">
+                <h1 className="text-4xl">Ended</h1>
+                <div>
+                  <button
+                    className="border-2 border-x-pink-800 px-1"
+                    onClick={() => send({ type: "replay" })}
+                  >
+                    Replay
+                  </button>
+                  <button
+                    className="border-2 border-x-pink-800 px-1"
+                    onClick={() => send({ type: "new video" })}
+                  >
+                    {" "}
+                    New Video{" "}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
