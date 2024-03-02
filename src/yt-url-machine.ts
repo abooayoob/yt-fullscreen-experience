@@ -225,7 +225,7 @@ export const ytUrlMachine = createMachine(
           `https://www.youtube.com/embed/${id || "placeholder"}`,
         );
         embedURL.searchParams.set("enablejsapi", "1");
-        embedURL.searchParams.set("controls", "1");
+        embedURL.searchParams.set("controls", "0");
         embedURL.searchParams.set("modestbranding", "1");
         embedURL.searchParams.set("playsinline", "1");
         embedURL.searchParams.set("rel", "0");
