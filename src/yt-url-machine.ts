@@ -6,7 +6,7 @@ type PlayerErrors = keyof typeof YT.PlayerError;
 
 export const ytUrlMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QE8AuBaADgGwIbLACcA6AGQHtcIACABTwMIGJCwrkBtABgF1FRM5WAEtUw8gDt+IAB6J0AJgCsAZmIA2JVwCMATl2aAHLpXrtAGhDJ5CrkuKGF29VwAsb7dtcLDhgL5+lmhYDETE9PhE1KzsxADymES4YpKwxACSEqLCuNhM3HxIIIIiKVJFcgjO9gDsrq51Sgq6yp4qQfJKesQmSjWeuu6GSq7qAUEYOJEkEYzRbBDI8YmEyeISaZnZufnahQJC2ZLSlSp9PV2uhmc1bjUjHQjoWrrEetUjXPrq6jXjVpNQjMgfNYgkkmU0rNhBIoExaABBACqAGUAKIAEQK0hKR3KoEqdRqGmGujcChU-S0hke6G0IzezhUymMNWa2gUY0CAJC03CIJii2WEPWUIYMLhaIAchjMdiiriyidEL5ibpHJT1FdlCoObTtLqNDVDP11BSmlwFP9glNGPzpqCheDVpDiFLyKhqLaJUwJGAAO7UABuwggYHI8oOpXWyoQSl0xK4djJXhNzgNtKuxO0XDMum0xgU3gp1sBfNmUUFS2da1Sbo9XvFsOIAHVcKJqAAzciEagwzAAV1QTCgDf7Q8jxUOSoqiDO2jew1uNX0RM5me0xJ+dRUOhUvnqXImvLtFd7VeFLtF9c93ubbY73d74+HAGNcBJX2BsJPFTHZ1UXAqK4xBOK4Lz0rofQ+LSqhqE4hhJq49KGAalKlieYRno61YrLWGw3o2+ASsQABqobhtQsCoOQmCJBAxBohIYYQCwYC2r+07-gSiAjAooFcDUwF9PuwwqO0VjyPoxD7ioJgKDUdSOEmfzcjaQL2nMF41q67q3k2UBkRR5BUTRdGQOEuADrAkBMNKspYrwOJcccAH6PxjhkkJlpXIhCi0vu-FXMBnIGJaWqCRhtpYQKCy4SKdZ6URyAkeRYYmdRtH0ZZ1m2RxTkKi5+KyLxUEOIYZgcvuXhFjUAVJhoOjxiaK7xp4rhRRpADCAAWYCvgA1tQA6EHkI3YNQr59YNkCcdGrk8U8Cn2JSJoqTmOZOLBckOJ4Cg+L4OaeZ1fIAEpgMxUTpJ2qwALZgEwwg3bg93zJdrAQHNeKxugu6GIyu5kvOxa6AF6oOOoFX3IdyEqSdp6xbEKKvqwF3EAAsjCwi3cIABetmsAAjgOcCep2A7YNgsAo2AF1fTOi2QfYLTqmcgn0vtmYmsQIz0vcTS7rcPzwzFDoXsjqMSMQ53E6TEpdhTVM0xdTAQJIYDEDCQbkANGvqeWiNChLtNSzLJPUfL5OU9TksIFr5DvmUBT09xJVVPGxKuOqxrXJDrgSdYTy6iBXyGN4urB1cvwi8CYtxcQxto2bcuwgr1vKxITBEIQPbEFMqBPrdxD6wjcdIxn0tgLLFup1bSu2-bjvrM7BVRt9AEFpuu1pm4Jg6DBklB7mPTMl4m5sjoXD+GpZal1p8eJ1LKI9eQgZ1zbJvUNnPbUPdsCwLgMCq8IsA4-vu9wAfMAuwtbsFg1njJoJShaFPNKD88TQOP0-th-mZiRRnphWO89y6SwTivNeisN4XS3oQHOvY95XwejIaiyQNa4E7KgIgAAKXcSYACUTAS6i1AUbCuy9V5p3rpvbeiDL6HzADfYqlQ9AUjeFqVQ6hBa-H9rSM0-FnCIXUOqBS1wnAx00pWBeFd0a4BkNjPGtkwAKLJtAjOzDYzpi4MQcCBpBLIUQqYAO8hNwgSjt7aqphtCSOwuLCuaJVGW3UZLVW6tNYSG1rrYus9SHSLASbRiTja4uJNnbTxDt8It32FOeaLDEBeEEm8Ke4Fbg6GMOBfUjhdE6g5F0KCmhmS2MNksReQTsghPTq4uhec8AFx7EXEhID-HkPAY4ipUBqEwIkOE7WTdJDROcnErRQNiBskhsMLwgwtSuFpNcN4u5TB9zNF8fMARuQSHIGGeARQmlDPbotX6Sh1AAy+EBS4+1QYf18GoRZVxVDKH0J4SRFAqB0CBPshmbtFBCQ0ApQx8ZcxKEcLSTk-02TTN1PcSklpill0WJ812lRfonM0OBXMFV6TiQLLSVqPREJ9E8G1MOKg4VkPileOsWwxC5ERbfSo8YZLgS9hHMOPwQUfy6AuRSZoUxexqBMjqQDorNPPPHHS15oSwjpfEqoZVcztXGQWbwmSP5OEES0YwWo6jpP9mSlpFL8JpCSneKAMrYwjFeEmQFqZTQZg-isnm7h8wCuOVqaex4RVSLFWCPCukGymtbO2MmO8XzmoAvGK1RLPC8pXCaDc9hkw3GMIMek+qfVOj9deE1BkjLpVMllSA4bFp+R5g8gVvlIbAszCIhwuZgJuGBYpMO6acKXiNYRQNaVKKZXMgxJiLFi1uwMPYBS+h1RND9tcUFgwxmTIPNcFmFVW3aSzYlANubu0ZTMtlWgVkbIQCHZUYYOiX7Mgrb4Kt79A6KFncaLoC65LNGXcKjSdjxVroIjm4izYt0Fr7cQHqJ8aKEEDm3L5rDcyJiEiI-MCZ9BXBnSBe9thw6mApB6nkXrer9SGuNI98hdwnLcF7VCXw6guHqPw-oYyBFxvOYMK0r6zoXTDL2a6d0wAEaWtkrQArNx6HOV4GtIE+i-CmX5a4mGmnerbRK1I3HPBMstay0YkMtof2XMQICdg3COAGEU5jc8DUJwzops4rwjqpKTAWQYShcVTw0GJ457lKRCRXTI8BmMsg43xoewqwyO5mhOWPOSphvLNFmZy1QAlgITKaCuTkHmAlJyrubMQlSaEXUUx7HmK4RG+DOWyfyH9vALjksMTkbmgLOCPFht9JTTNefkYovzimzQgQNHZ-oBY0xRZvUWHR+ZHlAuasWZLrTAmUKgVU2h8Cd5IMYYp4YIXlCpKcBFVQXNiQmlMHYA8yhORCs9Q1+FpSHHBM6evMzAWDl3xcPxTQ+1jRklsDG-UDVQqOAFeqTQ+hp4BCAA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QE8AuBaADgGwIbLACcA6AGQHtcIACABTwMIGJCwrkBtABgF1FRM5WAEtUw8gDt+IAB6J0AJgCsAZmIA2JVwCMATl2aAHLpXrtAGhDJ5CrkuKGF29VwAsb7dtcLDhgL5+lmhYDETE9PhE1KzsxADymES4YpKwxACSEqLCuNhM3HxIIIIiKVJFcgjaAOzaxDqGru5mStVKhioKQfIuCg4q2kq61d5cCtXqrgFBGDiRJBGM0WwQyPGJhMniEmmZ2bn52oUCQtmS0pUqrcS6Sl4drW5trt0I6Fq6xHrOSkru+up1NVplZZqEFuDlrEEkkymlFsIJFAmLQAIIAVQAygBRAAiBWkJTO5VAlRG1Q0hiGbgUKlqWkMr3Qg1cX2cnXawwUum0CnUIOCc0Y4UhMVW61h23hDERyOxADlcXiCUUiWULohfBTdI46ZNHKpeUztAMNNVDLV1LSlLYFAKwfMRfMoeKYZs4cR5eRUNQhbKmBIwAB3agAN2EEDA5BVJ1K2w1CEM6kMNxUrjaac6nnUKiZrl8NyMQL5AyG-kCoJCjsWUTFazdW1Snu9vplSOIAHVcKJqAAzciEaiIzAAV1QTCgLeHY5jxVO6oqiCudW0VOqXGq+nJfLzNQ0QNcKh0Kl8TX5FcF4KdSzrEvdUubPr97a7Pf7g+n44AxrgJF+wNgs5qvGi5VEe6hfIepieG4NrVNUTKqPYG4TJuNpary9pVsKNaDreDYel6T5tlAxAAGoRlG1CwKg5CYIkEDENiEiRhALBgEKQHziBpKIH8fS2NUaatCeVIqLmVjyPoxAnioJjjCMjhcBuWFCmEuEuvWGyNjsj6tvgsrkZR5DUbR9GQOEuAjrAkBMAqSr4rwhLcecoG8pMxBtJuCiuAYOrLkyJ6spm2hjOJoU6L8qlXhp+HaYRLbPqRFGRiZNF0QxlnWbZnFOaqLkkrIfFcCmrQ5s8xh0roLySW84ysl5dwtHcVLONF1aiisayYl+rBgBIxAALKIsIAC2wgAF62awACOI5wD6vYjtg2CwL1YD9VxcaubxVQWhSrheH8h7ZnYiG-Bo+a-CVShmFwabtThnWxD1fUDQASmAc0LbKfbLat639UwECSGAxCIqG5AANZg5eHXOrer0bR9X3zTRv1LSta1vQgEPkD+ZQFFtxIJqu5o3B0vkTDdJqBY4xC2KoOquJM+Ymioj3qc94pI-1xCfd96NIn9WOAxITBEIQA7EHMqDvqNxBw09CNdcQvMo4LYjC5jAM43jBPbETeWxiToG2NJR5pnoQlHgYgVtPUcmeLUdhuFcnMQirL1i0NuAyGNk22WA-uLf92PI8TC67auPKpi4zhGJ4JhMj5fRDHJVq1IeJiaB7161qr6tqwAFuQIY6+H-XUJLA7UKNcCwLgMDA8IsDjbAsB1w3TdgJHPFFQgtiGHUQw2vo+gfF0tXoFaXA3Oah0nj5kziXnsWFz7mKl+XYdi9XhBS4O9cdz3TAyDRyRg7gvaoEQAAUR7KQAlEwStc17POb9vIu68j++H13E+MA+47QHgoWwrJJi6B8r8dMXkJLWDeOoXQc9xhaFcE1Eq+o17c26j7bEIcMa7zesDUG4MJCQxhorB0ysbwbzekxQh2tiHI1xhQ-GOkjbHDnNtQqlRnAFnTgnHy1s2gpy0MQVQ4CLRUmUDqHBH88EMIIdkZhosSE1xILLeW1DsLvzod7ZRTCoA-0rhINhkMDaSC4c5XhCYnBUgZp4IYh5jB-BGMaO4DM6RphZnJVOt084AGFi5gC-FDagI5CB5CidgagX5QnhMgCAvhNgHZ0gtMpF2oUnCITkg4Tw0jfChUcLoPOn0WJRHSL2TY9cmDCBqbgeuyxKmsAgCkhM6Ajwpk8Lbe6dxvDckCjqBwyYgTtGHodLJCiDGunig+Ii+lkCGQAJoABUNLCCgBIAckBTKX1gCiUgqIVnpHlAAcQ6W5CYkivBtDMBg9wPkEHyH8ZInQ3JVCOF6XaEEOzIzwCKG-QgtjTa7S6bdNkfTlyDN0EyAwfRATHWqpTbyecKBUDoOCUFUcB6KCEhoeqq5qRGCnogxQyZPLcj8TUVQ65fkzD0Z7WZiCTa4sqF0iCmgMFcDGYMcKjJp4WnsGmZQ7RBhWkOjMgu0J5mpBxf3fhdRhK+QGEFQE3ymTmhTDoAwOhNBtB8sCC8ND9EyrmZKJsewxC5AVaAyoQwZKPJMCaRoGqyXyDuHUeCVoUFeGGMmRo0q8KqwIg+BESI7WpKqLceoZg7l8lXN4DBKdeRfGgcYSYIwGiHmDZpO8Ok0iLKSlGhMOYUz5gtC4QEPJBgWGnuuOeyCgShXEmMJM55GVqWZearSlrdLFpIp2bsi1a6flLaBTJNx3CmCuOSOlu4II8hQeJcYkUYF5riv2otiUh0pSoulcyEAJ3Rw3KyfMTgfBQUmCVPMtR9xDDMNUa0rRtCbtDXKgdu6DLtn3WlMymVmKsRPQPXkdIGYlSpE8Vc90Xl1QMJdfM5a-iAiElME1TL84htlduvSSUjKpVMhlCytArI2WPflOxbleR9AvbyRo4kb2CvJdyLlTQkwnhQ0CB6GHu1YfzWGpsg6f3JWMkRo9xBi6t1ooQVlPCwWgfEp8ZSYrPDeGqvoFOCHWYWj1YeMwHNeMxVwWrMWIH+E3skS6wEIjhhiIbfBKzaENwtGUJ2ysfH16GORkNEa40poUbZYqxAegNyErutyE0hSarkqtMq0KTRDpUgNIZrtxnFGmYYQLNGWsTEVzM5RhT-DdNxqaCVNwPJfgerePmT4Whro1Aiivd93m+aDT9gHAL5mQsoPsJKhOVw3FNEClwZTehbplj9cglrn8GFbzLqYvemjAGNxgN1weJoKR3QThg-UVJzr2B1HYYeThn1UnQ2l+GLLMs+ZUblxbb11urkaF8UwOpJnm3TMaSlepDD3Xus4aBucjOOhCWEiJsT1tdN5fUJoOpQrDBZm4GLPR70THAZuP7VxqoMo81eCpkZBzVNqWAKHPg04ucayugZeYPJlSzkdnwJ4Zt9vvEJ79yz2zrM2ds3ZNAL630BUF+1iAxnEErdTGtzj62xZNDJISw8UH-fzOhgIQA */
     id: "yt-player",
     preserveActionOrder: true,
     predictableActionArguments: true,
@@ -73,9 +73,8 @@ export const ytUrlMachine = createMachine(
               Initial: {
                 always: [
                   {
-                    target: "Playing",
+                    target: "Not playing.YTPlayer ignored states",
                     cond: "has url data",
-                    actions: "play video",
                   },
                   "Not playing",
                 ],
@@ -134,6 +133,12 @@ export const ytUrlMachine = createMachine(
                       history: {
                         type: "history",
                       },
+                    },
+                  },
+
+                  "YTPlayer ignored states": {
+                    on: {
+                      PLAYING: "#yt-player.Player ready.Operations.Playing",
                     },
                   },
                 },
@@ -216,12 +221,12 @@ export const ytUrlMachine = createMachine(
   {
     actions: {
       "assign url data": assign(() => {
-        let url = new URL(window.location.href);
-        let id = url.searchParams.get("id");
-        let start = url.searchParams.get("start");
-        let end = url.searchParams.get("end");
+        const url = new URL(window.location.href);
+        const id = url.searchParams.get("id");
+        const start = url.searchParams.get("start");
+        const end = url.searchParams.get("end");
         // https://www.youtube.com/embed/placeholder?enablejsapi=1&controls=0&modestbranding=1&playsinline=1&rel=0
-        let embedURL = new URL(
+        const embedURL = new URL(
           `https://www.youtube.com/embed/${id || "placeholder"}`,
         );
         embedURL.searchParams.set("enablejsapi", "1");

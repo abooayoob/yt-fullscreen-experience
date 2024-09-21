@@ -24,8 +24,8 @@ function App() {
       },
     },
   });
-  actor.onTransition((state) => {
-    console.log("state", state.value);
+  actor.onTransition(() => {
+    // console.log("state", state.value);
   });
 
   function onPlayerReady() {
@@ -40,6 +40,7 @@ function App() {
       [YT.PlayerState.PAUSED]: "PAUSED",
       [YT.PlayerState.ENDED]: "ENDED",
     } as const;
+    console.log("state change", nameMap[event.data]);
     send({ type: nameMap[event.data] });
   }
   function onPlayerError(event: YT.OnErrorEvent) {
@@ -130,7 +131,17 @@ function App() {
           )}
 
         {state.matches("Player ready.Operations.Not playing") && (
-          <div className="grid grid-cols-[1fr_1fr_1fr] grid-rows-[1fr_1fr_1fr] place-items-center  bg-pink-300 text-pink-700 opacity-90 [grid-column:1_/_4] [grid-row:1_/_4]">
+          <div
+            className={`grid grid-cols-[1fr_1fr_1fr] grid-rows-[1fr_1fr_1fr] place-items-center  bg-pink-300 text-pink-700 opacity-90 [grid-column:1_/_4] [grid-row:1_/_4] ${state.matches("Player ready.Operations.Not playing.YTPlayer ignored states") && `pointer-events-none`}`}
+          >
+            {state.matches(
+              "Player ready.Operations.Not playing.YTPlayer ignored states",
+            ) && (
+              <div>
+                <h1 className="text-4xl">Press anywhere to play!</h1>
+              </div>
+            )}
+
             {state.matches(
               "Player ready.Operations.Not playing.Wait for input",
             ) && (

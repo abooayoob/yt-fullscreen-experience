@@ -30,7 +30,7 @@ export interface Typegen0 {
   eventsCausingActions: {
     "assign iframe rendered": "iframe rendered";
     "assign url data": "got input" | "xstate.init";
-    "play video": "" | "got input" | "play";
+    "play video": "got input" | "play";
     "play video from start": "replay";
     "raise url checked": "xstate.init";
   };
@@ -53,6 +53,7 @@ export interface Typegen0 {
     | "Player ready.Operations.Not playing.Video stopped.Ended"
     | "Player ready.Operations.Not playing.Video stopped.Paused"
     | "Player ready.Operations.Not playing.Wait for input"
+    | "Player ready.Operations.Not playing.YTPlayer ignored states"
     | "Player ready.Operations.Playing"
     | "Player ready.Screen"
     | "Player ready.Screen.Exiting fullscreen"
@@ -74,6 +75,7 @@ export interface Typegen0 {
                     "Not playing"?:
                       | "Video stopped"
                       | "Wait for input"
+                      | "YTPlayer ignored states"
                       | { "Video stopped"?: "Ended" | "Paused" };
                   };
               Screen?:
