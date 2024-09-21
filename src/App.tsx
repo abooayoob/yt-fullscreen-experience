@@ -1,6 +1,7 @@
 import { useMachine } from "@xstate/react";
 import { ytUrlMachine } from "./yt-url-machine";
-import React from "react";
+import React, { FormEvent } from "react";
+import { Button, Form, Input, Label, TextField } from "react-aria-components";
 // import { Button, Form, Input, Label, TextField } from "react-aria-components";
 
 declare global {
@@ -97,6 +98,26 @@ function App() {
     };
   }, [state.context.iframeRendered]);
 
+  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+    const inputString = event.currentTarget.theinput.value;
+    send({
+      type: "got input",
+      payload: { inputString },
+    });
+  }
+
+  function handlePaste(event: React.ClipboardEvent<HTMLInputElement>): void {
+    event.preventDefault();
+    // const inputString = event.clipboardData.getData("text");
+
+    console.log("pasted", event.clipboardData.getData("text"));
+    send({
+      type: "got input",
+      payload: { inputString: event.clipboardData.getData("text") },
+    });
+  }
+
   return (
     <main className="h-full min-h-screen w-full min-w-full bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300">
       <div
@@ -155,6 +176,32 @@ function App() {
                   </button>
                 )}
                 <h1 className="text-4xl">Wait for input</h1>
+                <Form className="flex items-end gap-2" onSubmit={handleSubmit}>
+                  <TextField
+                    className="flex flex-col items-baseline gap-1"
+                    name="theinput"
+                  >
+                    <Label className="text-sm">Url or Id</Label>
+                    <Input
+                      className="rounded-sm border-2 border-slate-300 bg-slate-100 px-2 outline-none focus-visible:ring-1 focus-visible:ring-slate-300 dark:border-slate-600 dark:bg-slate-600 dark:text-slate-200"
+                      onPaste={handlePaste}
+                      onChange={(e) => {
+                        if (e.currentTarget.value.length === 11) {
+                          // send({
+                          //   type: "got ytid",
+                          //   payload: { ytid: e.currentTarget.value },
+                          // });
+                        }
+                      }}
+                    />
+                  </TextField>
+                  <Button
+                    type="submit"
+                    className="h-fit rounded-sm  border-2 border-slate-300 px-2 py-0 outline-none focus-visible:ring-1 focus-visible:ring-slate-300 pressed:bg-slate-600"
+                  >
+                    Load
+                  </Button>
+                </Form>
               </div>
             )}
 

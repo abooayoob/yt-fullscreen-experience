@@ -29,8 +29,9 @@ export interface Typegen0 {
   };
   eventsCausingActions: {
     "assign iframe rendered": "iframe rendered";
-    "assign url data": "got input" | "xstate.init";
-    "play video": "got input" | "play";
+    "assign url data": "xstate.init";
+    "load new video": "got input";
+    "play video": "play";
     "play video from start": "replay";
     "raise url checked": "xstate.init";
   };
