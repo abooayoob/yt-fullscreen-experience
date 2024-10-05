@@ -261,7 +261,7 @@ export const ytUrlMachine = createMachine(
           urlChecked: true,
         };
       }),
-      "load new video": (context, event) => {
+      "load new video": (_, event) => {
         const params = new URLSearchParams(event.payload.inputString);
         // needs validation ofcourse, but this is a poc
         console.log(event.payload.inputString);
@@ -283,7 +283,7 @@ export const ytUrlMachine = createMachine(
           loadObject["endSeconds"] = parseInt(end, 10);
         }
         if (id) {
-          window.player.loadVideoById(loadObject);
+          window.player.cueVideoById(loadObject);
         } else {
           console.log("no id");
         }
